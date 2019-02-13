@@ -189,7 +189,7 @@ public class UitbreidingOpdrachtModule extends BehaviourModule {
 			motorControl.stop();
 		}
 
-		else if (distanceValue < 20) { // && closestColorFront == Colors.BLUE ) {
+		else if (distanceValue < 20) { 
 		
 			
 			motorControl.stop();
@@ -201,42 +201,15 @@ public class UitbreidingOpdrachtModule extends BehaviourModule {
 		    		getClosestColor(colors, new MColor("", r2, g2, b2));;
 
 			grabCube.execute();
-//	        	driveBackwardsandTurn();
-
-//	        	getMarvin().getMotorControl().grabItForward(200, 1700);
-
 			motorControl.stop();
-//				motorControl.drive(200,200);
+
 			hasCube = true;
-//				countCubes++;
-			// telt aantal cubes en welke kleur
+
 		}
 		return colorBlockFront;
 	}
 
 }
-//	public void driveBackwardsandTurn() {
-//		getMarvin().getMotorControl().stop();
-//		Delay.msDelay(500);
-//		getMarvin().getMotorControl().driveBackwards(100, 100);
-//		Delay.msDelay(1000);
-//		getMarvin().getMotorControl().stop();
-//		Delay.msDelay(500);
-//		getMarvin().getMotorControl().drive(-100, 100);
-//		Delay.msDelay(3000);
-//		getMarvin().getMotorControl().stop();
-//		Delay.msDelay(500);
-//		getMarvin().getMotorControl().driveBackwards(100, 100);
-//		Delay.msDelay(1000);
-//		getMarvin().getMotorControl().stop();
-//		Delay.msDelay(500);
-//
-//	}
-//
-//	public boolean isColor(MColor color) {
-//	
-//		}
-//		
-//	}
+
 	
 
