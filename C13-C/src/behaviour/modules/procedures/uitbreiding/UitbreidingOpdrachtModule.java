@@ -131,35 +131,8 @@ public class UitbreidingOpdrachtModule extends BehaviourModule {
 
 			motorControl.driveForward(200, 200);
 
-			if (closestColorDown == Colors.BLACK) {
-				// Draaien
-				motorControl.drive(-250, 250);
-				Delay.msDelay(3000);
-				motorControl.stop();
-			}
-
-			else if (distanceValue < 20) { // && closestColorFront == Colors.BLUE ) {
-			
-				
-				motorControl.stop();
-				Delay.msDelay(300);
-
-				getMarvin().getMotorControl().letLoose(200, 1500);
-				Delay.msDelay(300);
-				colorBlockFront = getMarvin().getClosestColorFinder().
-		        		getClosestColor(colors, new MColor("", r2, g2, b2));;
-
-				grabCube.execute();
-//	        	driveBackwardsandTurn();
-
-//	        	getMarvin().getMotorControl().grabItForward(200, 1700);
-
-				motorControl.stop();
-//				motorControl.drive(200,200);
-				hasCube = true;
-//				countCubes++;
-				// telt aantal cubes en welke kleur
-			}
+			colorBlockFront = colorChoosing(colors, distanceValue, closestColorDown, r2, g2, b2, grabCube,
+					colorBlockFront, motorControl);
 
 			while (hasCube) {
 				motorControl.driveForward(100, 100);
@@ -205,6 +178,40 @@ public class UitbreidingOpdrachtModule extends BehaviourModule {
 		
 		return true;
 	
+	}
+
+	private MColor colorChoosing(ArrayList<MColor> colors, int distanceValue, MColor closestColorDown, float r2,
+			float g2, float b2, GrabCubeModule grabCube, MColor colorBlockFront, MotorControl motorControl) {
+		if (closestColorDown == Colors.BLACK) {
+			// Draaien
+			motorControl.drive(-250, 250);
+			Delay.msDelay(3000);
+			motorControl.stop();
+		}
+
+		else if (distanceValue < 20) { // && closestColorFront == Colors.BLUE ) {
+		
+			
+			motorControl.stop();
+			Delay.msDelay(300);
+
+			getMarvin().getMotorControl().letLoose(200, 1500);
+			Delay.msDelay(300);
+			colorBlockFront = getMarvin().getClosestColorFinder().
+		    		getClosestColor(colors, new MColor("", r2, g2, b2));;
+
+			grabCube.execute();
+//	        	driveBackwardsandTurn();
+
+//	        	getMarvin().getMotorControl().grabItForward(200, 1700);
+
+			motorControl.stop();
+//				motorControl.drive(200,200);
+			hasCube = true;
+//				countCubes++;
+			// telt aantal cubes en welke kleur
+		}
+		return colorBlockFront;
 	}
 
 }
