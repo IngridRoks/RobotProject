@@ -211,18 +211,7 @@ public class UitbreidingOpdracht3 extends behaviour.modules.BehaviourModule {
 			textLCD.drawString(cubeColor.getColorName(), 1, 1);
 
 
-			if (closestColor == Colors.WHITE) {
-				motorControl.drive(300, -150);// Go More Right
-
-				Delay.msDelay(100);
-			} else if (closestColor == Colors.BLACK || closestColor == Colors.DARK_BLUE) {
-				motorControl.drive(-150, 300);// Go More left
-				Delay.msDelay(100);
-
-			} else if (closestColor == Colors.GREY) {
-				motorControl.drive(200, 200); // Drive forward
-				Delay.msDelay(100);
-			}
+			colors(closestColor);
 
 			//als tijd om is, stopt de robot.
 			if (System.currentTimeMillis() - timeStart > 10000) {
@@ -233,6 +222,21 @@ public class UitbreidingOpdracht3 extends behaviour.modules.BehaviourModule {
 		motorControl.stop();
 
 		return true;
+	}
+
+	private void colors(MColor closestColor) {
+		if (closestColor == Colors.WHITE) {
+			motorControl.drive(300, -150);// Go More Right
+
+			Delay.msDelay(100);
+		} else if (closestColor == Colors.BLACK || closestColor == Colors.DARK_BLUE) {
+			motorControl.drive(-150, 300);// Go More left
+			Delay.msDelay(100);
+
+		} else if (closestColor == Colors.GREY) {
+			motorControl.drive(200, 200); // Drive forward
+			Delay.msDelay(100);
+		}
 	}
 	
 	//methode om de kleur van het blokje te herkennen
