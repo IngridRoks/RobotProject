@@ -132,6 +132,64 @@ public class UitbreidingOpdracht3 extends behaviour.modules.BehaviourModule {
 		// getMarvin().getMotorControl().drive(200, 200); //Start drive
 
 		// hascube is true, hij kan gaan rijden
+		hasACubeOrNot(colors, textLCD, cubeColor, hasCube, sensorModeRGBDown, sampleRGB);
+
+		//de weg wordt vervolgd
+		long timeStart = System.currentTimeMillis();
+
+		itHasACube(colors, textLCD, cubeColor, hasCube, sensorModeRGBDown, sampleRGB, timeStart);
+
+		motorControl.stop();
+
+		return true;
+	}
+
+	private void itHasACube(ArrayList<MColor> colors, TextLCD textLCD, MColor cubeColor, boolean hasCube,
+			SensorMode sensorModeRGBDown, float[] sampleRGB, long timeStart) {
+		while (hasCube) {
+			getMarvin().getMotorControl().drive(200, 200); // Start drive
+
+			textLCD.setAutoRefresh(false);
+			textLCD.refresh();
+			textLCD.clear();
+
+			sensorModeRGBDown.fetchSample(sampleRGB, 0);
+			float r = sampleRGB[0]; // rood
+			float g = sampleRGB[1]; // groen
+			float b = sampleRGB[2]; // blauw
+			float nr = colorSensorControlDown.getRed(r);
+			float ng = colorSensorControlDown.getGreen(g);
+			float nb = colorSensorControlDown.getBlue(b);
+
+			MColor closestColor = getMarvin().getClosestColorFinder().getClosestColor(colors,
+					new MColor("", nr, ng, nb));
+
+			textLCD.drawString(closestColor.getColorName(), 1, 0);
+			textLCD.drawString(cubeColor.getColorName(), 1, 1);
+
+
+			if (closestColor == Colors.WHITE) {
+				motorControl.drive(300, -150);// Go More Right
+
+				Delay.msDelay(100);
+			} else if (closestColor == Colors.BLACK || closestColor == Colors.DARK_BLUE) {
+				motorControl.drive(-150, 300);// Go More left
+				Delay.msDelay(100);
+
+			} else if (closestColor == Colors.GREY) {
+				motorControl.drive(200, 200); // Drive forward
+				Delay.msDelay(100);
+			}
+
+			//als tijd om is, stopt de robot.
+			if (System.currentTimeMillis() - timeStart > 10000) {
+				break;
+			}
+		}
+	}
+
+	private void hasACubeOrNot(ArrayList<MColor> colors, TextLCD textLCD, MColor cubeColor, boolean hasCube,
+			SensorMode sensorModeRGBDown, float[] sampleRGB) {
 		while (hasCube) {
 
 			// Start drive
@@ -185,54 +243,6 @@ public class UitbreidingOpdracht3 extends behaviour.modules.BehaviourModule {
 				break;
 			}
 		}
-
-		//de weg wordt vervolgd
-		long timeStart = System.currentTimeMillis();
-
-		while (hasCube) {
-			getMarvin().getMotorControl().drive(200, 200); // Start drive
-
-			textLCD.setAutoRefresh(false);
-			textLCD.refresh();
-			textLCD.clear();
-
-			sensorModeRGBDown.fetchSample(sampleRGB, 0);
-			float r = sampleRGB[0]; // rood
-			float g = sampleRGB[1]; // groen
-			float b = sampleRGB[2]; // blauw
-			float nr = colorSensorControlDown.getRed(r);
-			float ng = colorSensorControlDown.getGreen(g);
-			float nb = colorSensorControlDown.getBlue(b);
-
-			MColor closestColor = getMarvin().getClosestColorFinder().getClosestColor(colors,
-					new MColor("", nr, ng, nb));
-
-			textLCD.drawString(closestColor.getColorName(), 1, 0);
-			textLCD.drawString(cubeColor.getColorName(), 1, 1);
-
-
-			if (closestColor == Colors.WHITE) {
-				motorControl.drive(300, -150);// Go More Right
-
-				Delay.msDelay(100);
-			} else if (closestColor == Colors.BLACK || closestColor == Colors.DARK_BLUE) {
-				motorControl.drive(-150, 300);// Go More left
-				Delay.msDelay(100);
-
-			} else if (closestColor == Colors.GREY) {
-				motorControl.drive(200, 200); // Drive forward
-				Delay.msDelay(100);
-			}
-
-			//als tijd om is, stopt de robot.
-			if (System.currentTimeMillis() - timeStart > 10000) {
-				break;
-			}
-		}
-
-		motorControl.stop();
-
-		return true;
 	}
 	
 	//methode om de kleur van het blokje te herkennen
